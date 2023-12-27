@@ -4,6 +4,7 @@ package logics;
 import parsing.Parsing;
 import parsing.ParsingCheck;
 
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
@@ -49,12 +50,14 @@ public class SearchCheck{
                 LocalDateTime dateTime = LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd| HH-mm|");
                 String dataFormat = dateTime.format(formatter);
+                if ((check.get(value1) - value3) < 0){
+                    readyMoneyTtransfer.add(dataFormat +nameFile +" |"+" перевод с "+value1+ " на " + value2 + " " + value3 +" невозможно осуществить транзакцию, на "+ value1+ " нелостаточно средств ");
+                } else {
                 bankAccountArrayList.add(new BankAccount(value1, (check.get(value1))-value3));
                 bankAccountArrayList.add(new BankAccount(value2, (check.get(value2))+value3));
                 readyMoneyTtransfer.add(dataFormat +nameFile +" |"+" перевод с "+value1+ " на " + value2 + " " + value3 +" успешно обработан");
                 System.out.println(dataFormat +" перевод с "+value1+ " на " + value2 + " "+ array[2] + " " + "успешно обработан");
-            } else {
-                System.out.println("Ошибка в банковском счете, транзакция не может быть осуществлена");
+            }
         }
 
 
