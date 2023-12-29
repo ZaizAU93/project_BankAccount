@@ -4,13 +4,14 @@ import logics.UpdateCheck;
 import parsing.Parsing;
 import parsing.ParsingCheck;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws FileNotFoundException, InterruptedException {
         Scanner sc = new Scanner(System.in);
         System.out.println("1 - Вызов операции парсинга файлов перевода из input");
         System.out.println("2 - вызов операции вывода списка всех переводов из файла отчета.");
@@ -31,6 +32,9 @@ public class Main {
                     reportFile.glueReportParsingsTransfer(parsing, searchCheck);
                     reportFile.writeReportFile();
                     System.out.println("Файл отчет сформирован");
+
+                    System.out.println("Введите период");
+                    reportFile.periodOftime(sc.nextLine(), sc.nextLine());
 
 
 

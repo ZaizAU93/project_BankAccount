@@ -27,14 +27,18 @@ public class SearchCheck{
         return readyMoneyTtransfer;
     }
 
-    public ArrayList<String> searchCheck(ParsingCheck parsingCheck, Parsing parsing) {
+         public ArrayList<String> searchCheck(ParsingCheck parsingCheck, Parsing parsing) {
 
 
           check = parsingCheck.readAccountCheckFile();
-          checkTransfers = parsing.runDirectory();
+        try {
+            checkTransfers = parsing.runDirectory();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
 
-      for (String[] array : parsing.getCheckTransfer()) {
+        for (String[] array : parsing.getCheckTransfer()) {
           String value1 = array[0];
           String value2 = array[1];
           int value3 = Integer.parseInt(array[2]);
@@ -48,19 +52,23 @@ public class SearchCheck{
 
             if (check.containsKey(value2)) {
                 LocalDateTime dateTime = LocalDateTime.now();
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd| HH-mm|");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm:ss.SSSS|");
                 String dataFormat = dateTime.format(formatter);
                 if ((check.get(value1) - value3) < 0){
                     readyMoneyTtransfer.add(dataFormat +nameFile +" |"+" перевод с "+value1+ " на " + value2 + " " + value3 +" невозможно осуществить транзакцию, на "+ value1+ " нелостаточно средств ");
                 } else {
                 bankAccountArrayList.add(new BankAccount(value1, (check.get(value1))-value3));
                 bankAccountArrayList.add(new BankAccount(value2, (check.get(value2))+value3));
-                readyMoneyTtransfer.add(dataFormat +nameFile +" |"+" перевод с "+value1+ " на " + value2 + " " + value3 +" успешно обработан");
-                System.out.println(dataFormat +" перевод с "+value1+ " на " + value2 + " "+ array[2] + " " + "успешно обработан");
+                readyMoneyTtransfer.add(array[4] + nameFile +" |"+" перевод с "+value1+ " на " + value2 + " " + value3 +" успешно обработан");
+                System.out.println(array[4] +" перевод с "+value1+ " на " + value2 + " "+ array[2] + " " + "успешно обработан");
             }
         }
 
-
+          try {
+              Thread.sleep(10);
+          } catch (InterruptedException e) {
+              throw new RuntimeException(e);
+          }
       }
       return readyMoneyTtransfer;
       }

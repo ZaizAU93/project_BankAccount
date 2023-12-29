@@ -12,7 +12,11 @@ import java.util.regex.Pattern;
 import java.time.LocalDateTime;
 
 public class Parsing {
-     private ArrayList<String> reportParsing = new ArrayList<>();
+
+    private ArrayList<String> reportParsing = new ArrayList<>();
+
+    public Parsing() throws InterruptedException {
+    }
 
     public ArrayList<String> getReportParsing() {
         return reportParsing;
@@ -32,7 +36,7 @@ public class Parsing {
 
 
 
-    public  ArrayList<String[]> runDirectory() {
+    public  ArrayList<String[]> runDirectory() throws InterruptedException {
         ArrayList<String[]> arrayList = new ArrayList<>();
         String inputDirectory = "src/input";
         String outputDirectory = "src/archive";
@@ -44,8 +48,8 @@ public class Parsing {
         }
 
         LocalDateTime dateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd| HH-mm|");
-        String dataFormat = dateTime.format(formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm:ss.SSSS.ns|");
+
         File inputDir = new File(inputDirectory);
         // Проверка, что входная директория существует
         if (inputDir.exists() && inputDir.isDirectory()) {
@@ -53,13 +57,17 @@ public class Parsing {
             if (files != null) {
                 int i = 0;
                 for (File file : files) {
+                    String dataFormat = dateTime.format(formatter);
+
                     if (file.isFile() && file.getName().endsWith(".txt")) {
                         try {
                             // Парсинг файла и перемещение в архив
                             arrayList.add(parseAndMoveFile(file, outputDir));
                             } catch (IOException e) {
-                            System.out.println("Ошибка при обработке файла " + file.getName() + ": " + e.getMessage());
-                            reportParsing.add(dataFormat + "|" + file.getName() +" |Ошибка при обработке файла |"+   ": " + e.getMessage());
+                            Thread.sleep(200);
+                            System.out.println(e.getMessage());
+                            reportParsing.add( e.getMessage());
+
                         }
                     }
                 }
@@ -70,10 +78,11 @@ public class Parsing {
         return arrayList;
     }
 
-    public static String[] parseAndMoveFile(File file, File outputDir) throws IOException {
+    public static String[] parseAndMoveFile(File file, File outputDir) throws IOException, InterruptedException {
         // Чтение содержимого файла
         Path filePath = file.toPath();
-
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm:ss.SSSS.ns|");
         String content = "";
         FileInputStream fileInputStream;
         try {
@@ -100,7 +109,7 @@ public class Parsing {
 
         // Проверка валидности файла
         if (lines.length < 3) {
-            throw new IOException("Файл " + file.getName() + " содержит неполные данные");
+            throw new IOException(dateTime.format(formatter) + "Файл " + file.getName() + " содержит неполные данные");
 
         }
 
@@ -138,37 +147,58 @@ public class Parsing {
             amountCheck = matcher3.group();
            }
 
-
+        Thread.sleep(1000);
         if (checkFrom.equals("")) {
-            throw new IOException("Некорректно указан банковский счет отправителя в файле " + file.getName());
+
+            throw new IOException(dateTime.format(formatter) + "Некорректно указан банковский счет отправителя в файле " + file.getName());
+
         }
 
+        Thread.sleep(200);
         if (checkTo.equals("")) {
-            throw new IOException("Некорректно указан банковский счет получателя в файле " + file.getName());
+
+            throw new IOException(dateTime.format(formatter) + "Некорректно указан банковский счет получателя в файле " + file.getName());
         }
 
-
+        Thread.sleep(1000);
         if ( Integer.parseInt(amountCheck) < 0 ){
-            throw new IOException("Сумма перевода в файле " + file.getName() + " указана отрицательная");
-        }
 
+            throw new IOException(dateTime.format(formatter) + "Сумма перевода в файле " + file.getName() + " указана отрицательная");
+        }
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         if ( amountCheck == null){
-            throw new IOException("Сумма перевода в файле " + file.getName() + " указана некорректно");
+
+            throw new IOException(dateTime.format(formatter) +"Сумма перевода в файле " + file.getName() + " указана некорректно");
         }
 
-
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         boolean containsOnlyNumbers = amountCheck.matches("^[0-9]+$");
         if (!containsOnlyNumbers){
-           throw new IOException("Сумма перевода в файле " + file.getName() + " указана некорректно");
+
+            throw new IOException(dateTime.format(formatter) + "Сумма перевода в файле " + file.getName() + " указана некорректно");
         }
 
 
-
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         if ( Integer.parseInt(amountCheck) == 0){
-            throw new IOException("Сумма перевода в файле " + file.getName() + " указан нулевой перевод");
+
+            throw new IOException(dateTime.format(formatter) + "Сумма перевода в файле " + file.getName() + " указан нулевой перевод");
         }
 
-        String mas[] = {checkFrom, checkTo, amountCheck,file.getName()};
+
+        String mas[] = {checkFrom, checkTo, amountCheck,file.getName(), dateTime.format(formatter)};
         // Перемещение файла в архив
         File outputFile = new File(outputDir, file.getName());
         Files.move(filePath, outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
