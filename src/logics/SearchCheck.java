@@ -15,7 +15,7 @@ public class SearchCheck{
        private ArrayList<String[]> checkTransfers;
 
        private Map<String, Integer> result;
-        public static  ArrayList <BankAccount> bankAccountArrayList = new ArrayList<>();
+        public   ArrayList <BankAccount> bankAccountArrayList = new ArrayList<>();
 
         public ArrayList<BankAccount> getBankAccountArrayList() {
         return bankAccountArrayList;

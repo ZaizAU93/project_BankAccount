@@ -36,7 +36,7 @@ public class ReportFile {
         }
     }
 
-    public static Map<String, String> sortingDate() throws FileNotFoundException {
+    public  Map<String, String> sortingDate() throws FileNotFoundException {
         Map<String, String> mapReport = new HashMap<>();
         String fileName = "src/report/report.txt";
 
@@ -49,16 +49,13 @@ public class ReportFile {
             if (index != -1) {
                 String key = line.substring(0, index);
                 String value = line.substring(index + 1);
-                //    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm:ss.SSSS.ns");
-                //    LocalDateTime Date = LocalDateTime.parse(key, dateTimeFormatter);
-                //    LocalDateTime updatedDateTime = Date.plusNanos(100);
-                //key = updatedDateTime.toString();
                 mapReport.put(key, value);
             }
 
         }
         return mapReport;
     }
+
 
     public void periodOftime(String a, String b) throws FileNotFoundException {
 
