@@ -10,23 +10,23 @@ import java.util.Map;
 
 public class UpdateCheck extends ParsingCheck {
 
-    public Map<String, Integer> updateMap;
+    public Map<String, Double> updateMap;
     public ArrayList<BankAccount> checkUpdate;
 
-    public void setUpdateMap(Map<String, Integer> updateMap) {
+    public void setUpdateMap(Map<String, Double> updateMap) {
         this.updateMap = updateMap;
     }
 
     @Override
-    public Map<String, Integer> readAccountCheckFile() {
+    public Map<String, Double> readAccountCheckFile() {
         return super.readAccountCheckFile();
     }
 
-   public Map<String, Integer> updateCheck(ArrayList<BankAccount> checkUpdate){
-        Map<String, Integer> bankAccount = readAccountCheckFile();
+   public Map<String, Double> updateCheck(ArrayList<BankAccount> checkUpdate){
+        Map<String, Double> bankAccount = readAccountCheckFile();
         for(BankAccount account : checkUpdate) {
            String accountName = account.getCheck();
-           int accountSum = account.getSum();
+           double accountSum = account.getSum();
 
            if(bankAccount.containsKey(accountName)) {
                bankAccount.put(accountName, accountSum);
@@ -36,11 +36,11 @@ public class UpdateCheck extends ParsingCheck {
    }
 
 
-    public  void rewriteFile(Map<String, Integer> map) {
+    public  void rewriteFile(Map<String, Double> map) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter( "src/check/check.txt"))) {
-            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            for (Map.Entry<String, Double> entry : map.entrySet()) {
                 String key = entry.getKey();
-                int value = entry.getValue();
+                double value = entry.getValue();
                 writer.write(key + " " + value);
                 writer.newLine();
             }

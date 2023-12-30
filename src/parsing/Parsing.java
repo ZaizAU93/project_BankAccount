@@ -30,18 +30,11 @@ public class Parsing {
         return checkTransfer;
     }
 
-    ///public  void setCheckTransfer(ArrayList<String[]> checkTransfer) {
-       // this.checkTransfer = checkTransfer;
-    //}
-
-
-
     public  ArrayList<String[]> runDirectory() throws InterruptedException {
         ArrayList<String[]> arrayList = new ArrayList<>();
         String inputDirectory = "src/input";
         String outputDirectory = "src/archive";
 
-        // Создание директории для архивирования, если она не существует
         File outputDir = new File(outputDirectory);
         if (!outputDir.exists()) {
             outputDir.mkdirs();
@@ -64,8 +57,6 @@ public class Parsing {
                             // Парсинг файла и перемещение в архив
                             arrayList.add(parseAndMoveFile(file, outputDir));
                             } catch (IOException e) {
-                            Thread.sleep(200);
-                            System.out.println(e.getMessage());
                             reportParsing.add( e.getMessage());
 
                         }
@@ -79,7 +70,6 @@ public class Parsing {
     }
 
     public static String[] parseAndMoveFile(File file, File outputDir) throws IOException, InterruptedException {
-        // Чтение содержимого файла
         Path filePath = file.toPath();
         LocalDateTime dateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm:ss.SSSS.ns|");
@@ -94,7 +84,6 @@ public class Parsing {
             while (dataInputStream.available() > 0) {
                 int bytesRead = dataInputStream.read(buffer);
                 content = new String(buffer, 0, bytesRead);
-                //  System.out.print(content);
             }
 
             dataInputStream.close();
@@ -103,13 +92,10 @@ public class Parsing {
             e.printStackTrace();
         }
 
-
-        // Разделение содержимого файла на строки
         String[] lines = content.split("\n");
 
-        // Проверка валидности файла
         if (lines.length < 3) {
-            throw new IOException(dateTime.format(formatter) + "Файл " + file.getName() + " содержит неполные данные");
+            throw new IOException(dateTime.format(formatter) +file.getName()+ "| Файл  содержит неполные данные");
 
         }
 
@@ -147,54 +133,54 @@ public class Parsing {
             amountCheck = matcher3.group();
            }
 
-        Thread.sleep(1000);
+        Thread.sleep(100);
         if (checkFrom.equals("")) {
 
-            throw new IOException(dateTime.format(formatter) + "Некорректно указан банковский счет отправителя в файле " + file.getName());
+            throw new IOException(dateTime.format(formatter) + file.getName() +"| Некорректно указан банковский счет отправителя в файле ");
 
         }
 
-        Thread.sleep(200);
+        Thread.sleep(100);
         if (checkTo.equals("")) {
 
-            throw new IOException(dateTime.format(formatter) + "Некорректно указан банковский счет получателя в файле " + file.getName());
+            throw new IOException(dateTime.format(formatter) + file.getName()+ "|" +" Некорректно указан банковский счет получателя" );
         }
 
-        Thread.sleep(1000);
-        if ( Integer.parseInt(amountCheck) < 0 ){
+        Thread.sleep(100);
+        if ( Double.parseDouble(amountCheck) < 0 ){
 
-            throw new IOException(dateTime.format(formatter) + "Сумма перевода в файле " + file.getName() + " указана отрицательная");
+            throw new IOException(dateTime.format(formatter) + file.getName()+ "| Сумма перевода отрицательная");
         }
         try {
-            Thread.sleep(200);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         if ( amountCheck == null){
 
-            throw new IOException(dateTime.format(formatter) +"Сумма перевода в файле " + file.getName() + " указана некорректно");
+            throw new IOException(dateTime.format(formatter) +file.getName()+"| Сумма перевода  указана некорректно");
         }
 
         try {
-            Thread.sleep(200);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         boolean containsOnlyNumbers = amountCheck.matches("^[0-9]+$");
         if (!containsOnlyNumbers){
 
-            throw new IOException(dateTime.format(formatter) + "Сумма перевода в файле " + file.getName() + " указана некорректно");
+            throw new IOException(dateTime.format(formatter) +file.getName() + "| Сумма перевода в файле указана некорректно");
         }
 
 
         try {
-            Thread.sleep(200);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        if ( Integer.parseInt(amountCheck) == 0){
+        if ( Double.parseDouble(amountCheck) == 0){
 
-            throw new IOException(dateTime.format(formatter) + "Сумма перевода в файле " + file.getName() + " указан нулевой перевод");
+            throw new IOException(dateTime.format(formatter) + file.getName() +"|Указан нулевой перевод");
         }
 
 
@@ -202,9 +188,6 @@ public class Parsing {
         // Перемещение файла в архив
         File outputFile = new File(outputDir, file.getName());
         Files.move(filePath, outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-        System.out.println("Файл " + file.getName() + " успешно обработан и перемещен в архив");
-
 
         return mas;
     }

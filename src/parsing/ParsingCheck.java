@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class ParsingCheck {
 
-    public  Map<String, Integer> readAccountCheckFile() {
-        Map<String, Integer> check = new HashMap<>();
+    public  Map<String, Double> readAccountCheckFile() {
+        Map<String, Double> check = new HashMap<>();
         String fileName = "src/check/check.txt";
         try {
             File file = new File(fileName);
@@ -19,7 +19,7 @@ public class ParsingCheck {
                 String line = scanner.nextLine();
                 String[] parts = line.split(" ");
                 String accountNumber = parts[0];
-                int balance = Integer.parseInt(parts[1]);
+                double balance = Double.parseDouble(parts[1]);
 
                 check.put(accountNumber, balance);
             }

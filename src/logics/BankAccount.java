@@ -2,9 +2,9 @@ package logics;
 
 public class BankAccount {
     private String check;
-    private int sum;
+    private double sum;
 
-    public BankAccount(String check, int sum) {
+    public BankAccount(String check, double sum) {
         this.check = check;
         this.sum = sum;
     }
@@ -13,7 +13,7 @@ public class BankAccount {
         return check;
     }
 
-    public int getSum() {
+    public double getSum() {
         return sum;
     }
 
@@ -21,11 +21,11 @@ public class BankAccount {
         this.check = check;
     }
 
-    public void setSum(int sum) {
+    public void setSum(double sum) {
         this.sum = sum;
     }
 
-    public BankAccount bankTransferFrom(BankAccount checkFrom, BankAccount checkTo, int checkSum){
+    public BankAccount bankTransferFrom(BankAccount checkFrom, BankAccount checkTo, double checkSum){
         checkFrom.setSum(checkFrom.sum - checkSum );
         return checkFrom;
     }

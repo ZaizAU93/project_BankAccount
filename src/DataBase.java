@@ -32,7 +32,7 @@ public class DataBase {
         PreparedStatement preparedStatement1 = connection.prepareStatement(queryOperations);
 
 
-        Map<String, Integer> mapDataCheck = check.readAccountCheckFile();
+        Map<String, Double> mapDataCheck = check.readAccountCheckFile();
         Map<String, String> mapReportFile;
         try {
             mapReportFile = reportFile.sortingDate();
@@ -40,7 +40,7 @@ public class DataBase {
             throw new RuntimeException(e);
         }
 
-        for (Map.Entry<String, Integer> entry : mapDataCheck.entrySet()) {
+        for (Map.Entry<String, Double> entry : mapDataCheck.entrySet()) {
             preparedStatement.setString(1, entry.getKey());
             preparedStatement.setDouble(2, entry.getValue());
             preparedStatement.executeUpdate();
@@ -56,7 +56,7 @@ public class DataBase {
         preparedStatement1.close();
         connection.close();
 
-        System.out.println("Data uploaded successfully!");
+        System.out.println("Данные успешно загружены!");
 
     }
 }

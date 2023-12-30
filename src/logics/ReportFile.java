@@ -60,21 +60,21 @@ public class ReportFile {
     public void periodOftime(String a, String b) throws FileNotFoundException {
 
         String filePath = "src/report/report.txt";
-        int n = 0; // количество строк
-        List<String[]> lines = new ArrayList<>(); // список для хранения строк файла
+        int n = 0;
+        List<String[]> lines = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] cols = line.split("\\|", 2); // разделение строки на элементы по первому вхождению "|"
+                String[] cols = line.split("\\|", 2);
                 lines.add(cols);
-                n++; // увеличение счетчика строк
+                n++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        String[][] array = new String[n][2]; // создание двумерного массива размером [n][2]
+        String[][] array = new String[n][2];
 
         for (int i = 0; i < n; i++) {
             String[] line = lines.get(i);
@@ -86,21 +86,37 @@ public class ReportFile {
 
         int indexA = 0;
         int indexB = 0;
+
+        boolean isA = false;
+        boolean isB = false;
+
         for(int i = 0 ; i <array.length; i++){
                 if (array[i][0].equals(a)){
                     indexA = i;
+                    isA = true;
                 }
                 if (array[i][0].equals(b)){
                     indexB = i;
+                    isB = true;
                 }
-            }
 
-        for (int i = indexA; i <= indexB; i++){
-            for (int j = 0; j < 2; j++){
-                System.out.println(array[i][j]);
-            }
-            System.out.print(" ");
-        }
+                }
+
+
+       if (isA == true && isB == true) {
+           for (int i = indexA; i <= indexB; i++) {
+               for (int j = 0; j < 2; j++) {
+                   System.out.print(array[i][j] + " ");
+               }
+               System.out.println(" ");
+           }
+       }else if (isA == false){
+           System.out.println("Вы ввели начальную точку не из файла-отчета. Прочтите файл Readme и введите верно");
+       }else if (isB){
+           System.out.println("Вы ввели конечную точку не из файла-отчета. Прочтите файл Readme и введите верно");
+       }else if (isA == false && isB == false){
+           System.out.println("Вы ввели период которого нет в файле-отчете. Прочтите файл Readme и введите верно");
+       };
     }
 }
 

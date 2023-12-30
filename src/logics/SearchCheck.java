@@ -1,10 +1,6 @@
 package logics;
-
-
-
 import parsing.Parsing;
 import parsing.ParsingCheck;
-
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,10 +8,9 @@ import java.util.Map;
 import java.time.LocalDateTime;
 
 public class SearchCheck{
-       private Map<String, Integer> check;
+       private Map<String, Double> check;
        private ArrayList<String[]> checkTransfers;
 
-       private Map<String, Integer> result;
         public   ArrayList <BankAccount> bankAccountArrayList = new ArrayList<>();
 
         public ArrayList<BankAccount> getBankAccountArrayList() {
@@ -30,8 +25,7 @@ public class SearchCheck{
 
          public ArrayList<String> searchCheck(ParsingCheck parsingCheck, Parsing parsing) throws IOException {
 
-
-          check = parsingCheck.readAccountCheckFile();
+            check = parsingCheck.readAccountCheckFile();
         try {
             checkTransfers = parsing.runDirectory();
         } catch (InterruptedException e) {
@@ -42,14 +36,9 @@ public class SearchCheck{
         for (String[] array : parsing.getCheckTransfer()) {
           String value1 = array[0];
           String value2 = array[1];
-          int value3 = Integer.parseInt(array[2]);
+          double value3 = Double.parseDouble(array[2]);
           String nameFile = array[3];
 
-            if (check.containsKey(value1)) {
-                System.out.println("Значение " + value1 + " содержится в списке счетов");
-                } else {
-                System.out.println("Значение " + value1 + " не содержится в Map");
-            }
 
             if (check.containsKey(value2)) {
                 LocalDateTime dateTime = LocalDateTime.now();
@@ -61,7 +50,6 @@ public class SearchCheck{
                 bankAccountArrayList.add(new BankAccount(value1, (check.get(value1))-value3));
                 bankAccountArrayList.add(new BankAccount(value2, (check.get(value2))+value3));
                 readyMoneyTtransfer.add(array[4] + nameFile +" |"+" перевод с "+value1+ " на " + value2 + " " + value3 +" успешно обработан");
-                System.out.println(array[4] +" перевод с "+value1+ " на " + value2 + " "+ array[2] + " " + "успешно обработан");
             }
         }
 
