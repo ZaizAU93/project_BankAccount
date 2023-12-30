@@ -1,6 +1,7 @@
 package logics;
 
 
+
 import parsing.Parsing;
 import parsing.ParsingCheck;
 
@@ -27,7 +28,7 @@ public class SearchCheck{
         return readyMoneyTtransfer;
     }
 
-         public ArrayList<String> searchCheck(ParsingCheck parsingCheck, Parsing parsing) {
+         public ArrayList<String> searchCheck(ParsingCheck parsingCheck, Parsing parsing) throws IOException {
 
 
           check = parsingCheck.readAccountCheckFile();

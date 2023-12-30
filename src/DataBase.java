@@ -10,7 +10,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static java.lang.Class.forName;
 
 public class DataBase {
     static String url = "jdbc:mysql://localhost:3306/root";
@@ -52,9 +51,6 @@ public class DataBase {
             preparedStatement1.setString(2, entry.getValue());
             preparedStatement1.executeUpdate();
         }
-
-
-        //   preparedStatement.executeUpdate();
 
         preparedStatement.close();
         preparedStatement1.close();
